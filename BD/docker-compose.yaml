@@ -31,6 +31,11 @@ services:
       DB_NAME: ${DB_NAME}
       DB_PORT: "5432"
     restart: "no"          # roda migração e encerra
+    ports:
+      - "8080:8080"
+
+
+  
 
 volumes:
   db_data:
