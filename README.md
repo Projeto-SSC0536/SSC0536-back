@@ -2,6 +2,19 @@ Para criar o banco de dados:
  - Baixar Docker-Desktop
  - Rodar "docker-compose up -d --build" na pasta do banco de dados
 
+## 📥 População de teste
+
+O script `popula_base.sh` na raiz insere dados de teste (usuários, almoxarifado e patrimônios). Use apenas em ambiente de desenvolvimento/testes.
+
+Rápido:
+
+```bash
+chmod +x ./popula_base.sh
+./popula_base.sh   # ou: bash ./popula_base.sh
+```
+
+O script faz requisições para `http://localhost:8080/api`. Se a API não estiver exposta no host ajuste a URL ou execute o script de dentro de um container com acesso à rede do Compose.
+
 
 ---
 
