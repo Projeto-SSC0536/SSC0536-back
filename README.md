@@ -184,7 +184,7 @@ Retorna o status do servidor.
 
 - Todos os endpoints retornam e aceitam **JSON UTF-8**.
 - Nenhum campo retorna senha.
-- Datas seguem o formato **ISO 8601** (`YYYY-MM-DD`).
+- Datas devem ser enviadas no formato **RFC3339/ISO 8601** (`YYYY-MM-DDTHH:MM:SSZ`, ex: `2026-10-10T00:00:00Z`).
 - Para erros, o corpo da resposta contém:
   ```json
   {"error": "mensagem descritiva"}
