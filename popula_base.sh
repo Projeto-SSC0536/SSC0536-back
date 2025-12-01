@@ -10,26 +10,26 @@ echo "📌 Iniciando população de dados..."
 ##################################################
 echo "👤 Criando usuários..."
 declare -a usuarios=(
-'{"nome":"Alice","senha":"123","cargo":"Admin"}'
-'{"nome":"Bruno","senha":"abc","cargo":"Técnico"}'
-'{"nome":"Carla","senha":"123","cargo":"Estagiário"}'
-'{"nome":"Diego","senha":"123","cargo":"Administrador"}'
-'{"nome":"Eduarda","senha":"pass","cargo":"Cientista"}'
-'{"nome":"Felipe","senha":"123","cargo":"Técnico"}'
-'{"nome":"Gabriela","senha":"123","cargo":"Analista"}'
-'{"nome":"Hugo","senha":"123","cargo":"Suporte"}'
-'{"nome":"Isabela","senha":"123","cargo":"Estagiário"}'
-'{"nome":"João","senha":"123","cargo":"Admin"}'
-'{"nome":"Karina","senha":"123","cargo":"Cientista"}'
-'{"nome":"Lucas","senha":"123","cargo":"Supervisor"}'
-'{"nome":"Marina","senha":"123","cargo":"Analista"}'
-'{"nome":"Nicolas","senha":"123","cargo":"Técnico"}'
-'{"nome":"Olivia","senha":"123","cargo":"Gestora"}'
-'{"nome":"Paulo","senha":"123","cargo":"Administrador"}'
-'{"nome":"Quezia","senha":"123","cargo":"Engenheira"}'
-'{"nome":"Renato","senha":"123","cargo":"Estagiário"}'
-'{"nome":"Sofia","senha":"123","cargo":"Técnico"}'
-'{"nome":"Thiago","senha":"123","cargo":"Supervisor"}'
+'{"nome":"alice@example.com","senha":"123","cargo":"Admin"}'
+'{"nome":"bruno@example.com","senha":"abc","cargo":"Técnico"}'
+'{"nome":"carla@example.com","senha":"123","cargo":"Estagiário"}'
+'{"nome":"diego@example.com","senha":"123","cargo":"Administrador"}'
+'{"nome":"eduarda@example.com","senha":"pass","cargo":"Cientista"}'
+'{"nome":"felipe@example.com","senha":"123","cargo":"Técnico"}'
+'{"nome":"gabriela@example.com","senha":"123","cargo":"Analista"}'
+'{"nome":"hugo@example.com","senha":"123","cargo":"Suporte"}'
+'{"nome":"isabela@example.com","senha":"123","cargo":"Estagiário"}'
+'{"nome":"joao@example.com","senha":"123","cargo":"Admin"}'
+'{"nome":"karina@example.com","senha":"123","cargo":"Cientista"}'
+'{"nome":"lucas@example.com","senha":"123","cargo":"Supervisor"}'
+'{"nome":"marina@example.com","senha":"123","cargo":"Analista"}'
+'{"nome":"nicolas@example.com","senha":"123","cargo":"Técnico"}'
+'{"nome":"olivia@example.com","senha":"123","cargo":"Gestora"}'
+'{"nome":"paulo@example.com","senha":"123","cargo":"Administrador"}'
+'{"nome":"quezia@example.com","senha":"123","cargo":"Engenheira"}'
+'{"nome":"renato@example.com","senha":"123","cargo":"Estagiário"}'
+'{"nome":"sofia@example.com","senha":"123","cargo":"Técnico"}'
+'{"nome":"thiago@example.com","senha":"123","cargo":"Supervisor"}'
 )
 
 for u in "${usuarios[@]}"; do
@@ -86,4 +86,3 @@ echo "✔ Patrimônios criados!"
 
 
 echo "🎯 População concluída com sucesso!"
-
