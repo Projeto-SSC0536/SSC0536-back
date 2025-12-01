@@ -21,7 +21,7 @@ import (
 
 type Usuario struct {
 	ID        uint      `gorm:"primaryKey" json:"id"`
-	Nome      string    `gorm:"type:text;not null" json:"nome"`
+	Email     string    `gorm:"type:text;not null;uniqueIndex" json:"email"`
 	Senha     string    `gorm:"type:text;not null" json:"-"` // não expor senha no JSON
 	Cargo     string    `gorm:"type:text;not null" json:"cargo"`
 	CreatedAt time.Time `json:"created_at"`
@@ -128,12 +128,12 @@ func hashPassword(raw string) (string, error) {
 
 // Usuário
 type usuarioCreateReq struct {
-	Nome  string `json:"nome"`
+	Email string `json:"email"`
 	Senha string `json:"senha"`
 	Cargo string `json:"cargo"`
 }
 type usuarioUpdateReq struct {
-	Nome  *string `json:"nome,omitempty"`
+	Email *string `json:"email,omitempty"`
 	Senha *string `json:"senha,omitempty"`
 	Cargo *string `json:"cargo,omitempty"`
 }
@@ -209,8 +209,8 @@ func handleCreateUsuario(db *gorm.DB) http.HandlerFunc {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
 			return
 		}
-		if strings.TrimSpace(req.Nome) == "" || strings.TrimSpace(req.Cargo) == "" || strings.TrimSpace(req.Senha) == "" {
-			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "nome, cargo e senha são obrigatórios"})
+		if strings.TrimSpace(req.Email) == "" || strings.TrimSpace(req.Cargo) == "" || strings.TrimSpace(req.Senha) == "" {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "email, cargo e senha são obrigatórios"})
 			return
 		}
 		hashed, err := hashPassword(req.Senha)
@@ -218,7 +218,7 @@ func handleCreateUsuario(db *gorm.DB) http.HandlerFunc {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 			return
 		}
-		u := Usuario{Nome: req.Nome, Senha: hashed, Cargo: req.Cargo}
+		u := Usuario{Email: req.Email, Senha: hashed, Cargo: req.Cargo}
 		if err := db.Create(&u).Error; err != nil {
 			writeJSON(w, http.StatusInternalServerError, map[string]any{"error": err.Error()})
 			return
@@ -250,12 +250,12 @@ func handleUpdateUsuario(db *gorm.DB) http.HandlerFunc {
 		}
 
 		updates := map[string]any{}
-		if req.Nome != nil {
-			if strings.TrimSpace(*req.Nome) == "" {
-				writeJSON(w, http.StatusBadRequest, map[string]string{"error": "nome inválido"})
+		if req.Email != nil {
+			if strings.TrimSpace(*req.Email) == "" {
+				writeJSON(w, http.StatusBadRequest, map[string]string{"error": "email inválido"})
 				return
 			}
-			updates["nome"] = *req.Nome
+			updates["email"] = *req.Email
 		}
 		if req.Cargo != nil {
 			if strings.TrimSpace(*req.Cargo) == "" {
@@ -589,7 +589,7 @@ func handleDeletePatr(db *gorm.DB) http.HandlerFunc {
 func handleLogin(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req struct {
-			Nome  string `json:"nome"`
+			Email string `json:"email"`
 			Senha string `json:"senha"`
 		}
 
@@ -598,23 +598,23 @@ func handleLogin(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 
-		// Buscar usuário pelo nome
+		// Buscar usuário pelo email
 		var u Usuario
-		if err := db.Where("nome = ?", req.Nome).First(&u).Error; err != nil {
-			writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "nome ou senha incorretos"})
+		if err := db.Where("email = ?", req.Email).First(&u).Error; err != nil {
+			writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "email ou senha incorretos"})
 			return
 		}
 
 		// Comparar senha
 		if bcrypt.CompareHashAndPassword([]byte(u.Senha), []byte(req.Senha)) != nil {
-			writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "nome ou senha incorretos"})
+			writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "email ou senha incorretos"})
 			return
 		}
 
 		// OK → devolve dados do usuário (sem senha)
 		resp := map[string]any{
 			"id":         u.ID,
-			"nome":       u.Nome,
+			"email":      u.Email,
 			"cargo":      u.Cargo,
 			"created_at": u.CreatedAt,
 			"updated_at": u.UpdatedAt,
