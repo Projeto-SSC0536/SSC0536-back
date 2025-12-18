@@ -39,6 +39,7 @@ type Almoxarifado struct {
 	CriadoPorUser Usuario    `gorm:"foreignKey:CriadoPor;constraint:OnDelete:RESTRICT,OnUpdate:CASCADE" json:"-"`
 	CreatedAt     time.Time  `json:"created_at"`
 	UpdatedAt     time.Time  `json:"updated_at"`
+	Quantidade    uint       `json:"quantidade"`
 }
 
 type Patrimonio struct {
@@ -144,12 +145,14 @@ type almoxCreateReq struct {
 	Categoria    string     `json:"categoria"`
 	DataValidade *time.Time `json:"data_validade,omitempty"`
 	CriadoPor    uint       `json:"criado_por"`
+	Quantidade   uint       `json:"quantidade"`
 }
 type almoxUpdateReq struct {
 	Nome         *string    `json:"nome,omitempty"`
 	Categoria    *string    `json:"categoria,omitempty"`
 	DataValidade *time.Time `json:"data_validade,omitempty"`
 	DataSaida    *time.Time `json:"data_saida,omitempty"`
+	Quantidade   *uint      `json:"quantidade,omitempty"`
 }
 
 // Patrimônio
@@ -357,6 +360,7 @@ func handleCreateAlmox(db *gorm.DB) http.HandlerFunc {
 			Categoria:    req.Categoria,
 			DataValidade: req.DataValidade,
 			CriadoPor:    req.CriadoPor,
+			Quantidade:   req.Quantidade,
 		}
 		if err := db.Create(&a).Error; err != nil {
 			writeJSON(w, http.StatusInternalServerError, map[string]any{"error": err.Error()})
@@ -408,6 +412,9 @@ func handleUpdateAlmox(db *gorm.DB) http.HandlerFunc {
 		}
 		if req.DataSaida != nil {
 			updates["data_saida"] = *req.DataSaida
+		}
+		if req.Quantidade != nil {
+			updates["quantidade"] = *req.Quantidade
 		}
 
 		if len(updates) == 0 {
